@@ -171,6 +171,11 @@ var C = (function() {
     }
   };
 
+  this.restart = function() {
+    this.stop();
+    this.start();
+  };
+
   this.start = function() {
     this.interval = setInterval(function() {
       this.updateCirclePosition();
@@ -193,7 +198,8 @@ var C = (function() {
   return {
     init: this.init,
     start: this.start,
-    stop: this.stop
+    stop: this.stop,
+    restart: this.restart
   };
 
 })();
@@ -202,17 +208,12 @@ var C = (function() {
 window.onload = function() {
 
   $("#btnStart").on('click', function() {
-    if (M.getState() === M.RUNNING) {
-      C.stop();
-    } else {
-      C.start();
-    }
+    (M.getState() === M.RUNNING) ? C.stop() : C.start();
   });
 
   $("#inputSegments").change(function() {
     M.setSegments(parseInt($(this).val()));
-    C.stop();
-    C.start();
+    C.restart();
   });
 
   // Create our paper
